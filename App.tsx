@@ -37,6 +37,7 @@ const [HideList, setHideList] = useState(null);
     }
 
 
+    console.log(List);
   useEffect(() => {
     gethidedb();
   }, [])
@@ -59,40 +60,30 @@ const [HideList, setHideList] = useState(null);
       }
     }
   
+
+    // console.log(HideList);
   const handleLike = async () => 
     {
       console.log("Like Pressed");
-      // console.log(List);
-
       try {
-       const docRef = await firestore()
+         await firestore()
         .collection('Show')
         .add({
-         Name: 'D',
+         Name: 'E',
          createdAt: firestore.FieldValue.serverTimestamp()
       })
      .then(() => {
       console.log('User added!');
-    //  console.log('Document written with ID: ', docRef.id);
       });
-
       } catch (error) {
         console.log(error);
-        
       }
-
 
     }
    const handleList = async () => 
     {
-      console.log(List);
-      console.log(List.length);
-      showList == true ? setShowList(false) : setShowList(true);
-      console.log(showList);
-      console.log(List);
-      // console.log(HideList);
-
-
+    console.log(List);
+    setShowList(!showList)
     }
 
   const handleLongPress = async (cardId, cardVal) => 
@@ -128,10 +119,9 @@ const [HideList, setHideList] = useState(null);
     <TouchableOpacity onPress={handleList}>
       <Text style = {styles.button}>List</Text>
     </TouchableOpacity>
-    {showList && (<FlatList
+  { showList && (<FlatList
           data={List}
           renderItem={item => {
-            const cardIndex = item.index;
             if (item.item !== null) {
               return (
                 <TouchableOpacity onLongPress={ () => handleLongPress(item.item.id, item.item.Name)}>
@@ -141,8 +131,9 @@ const [HideList, setHideList] = useState(null);
             }
           }}
         />
-    )}
-
+  )
+}
+  
 {/* </TouchableOpacity> */}
   
   </View>
