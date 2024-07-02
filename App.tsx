@@ -18,7 +18,7 @@ const [List, setList] = useState(null)
   const getdb = async () => 
     {
     try {        
-      firestore().collection('todo').onSnapshot((snap) => {
+      firestore().collection('Show').onSnapshot((snap) => {
         const tempArray = []
         snap.forEach((item) => {
           tempArray.push({
@@ -30,14 +30,15 @@ const [List, setList] = useState(null)
         setList(tempArray)
         
       })
-          } catch (error) {
+      } catch (error) {
             console.log(error);
-          }    
+      }    
     }
   
   const handleLike = async () => 
     {
       console.log("Like Pressed");
+      // console.log(List);
 
       try {
        await firestore()
@@ -59,8 +60,10 @@ const [List, setList] = useState(null)
    const handleList = async () => 
     {
       console.log(List);
+      console.log(List.length);
       showList == true ? setShowList(false) : setShowList(true);
       console.log(showList);
+      console.log(List);
 
 
     }
@@ -97,8 +100,8 @@ const [List, setList] = useState(null)
   <View>
     <TouchableOpacity onPress={handleList}>
       <Text style = {styles.button}>List</Text>
-    {/* </TouchableOpacity> */}
-    { showList && (<FlatList
+    </TouchableOpacity>
+    {showList && (<FlatList
           data={List}
           renderItem={item => {
             const cardIndex = item.index;
@@ -110,10 +113,10 @@ const [List, setList] = useState(null)
               );
             }
           }}
-        />)
-}
+        />
+    )}
 
-</TouchableOpacity>
+{/* </TouchableOpacity> */}
   
   </View>
   </View>
