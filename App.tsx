@@ -12,6 +12,28 @@ const [List, setList] = useState(null)
 const [HideList, setHideList] = useState(null);
 
 
+useEffect(() => {
+  getdbFirstTime();
+}, [])
+
+
+const getdbFirstTime = async () => 
+  {
+  try {        
+    const Users =  await firestore().collection('Show').orderBy('createdAt', 'desc').get()
+    const tempo = []
+    Users.forEach((item) => {tempo.push({...item.data(), id: item.id})});
+
+
+    setList(tempo);
+    } catch (error) {
+      console.log(error);
+    }  
+  }
+
+
+//  console.log(List);
+
   useEffect(() => {
     getdb();
   }, [])
@@ -37,10 +59,13 @@ const [HideList, setHideList] = useState(null);
     }
 
 
-    console.log(List);
+    // console.log(List);
   useEffect(() => {
     gethidedb();
   }, [])
+
+
+
 
   const gethidedb = async () => 
     {
@@ -63,6 +88,15 @@ const [HideList, setHideList] = useState(null);
 
    
 
+
+
+
+  const demotransfer = async () => 
+    {
+      
+
+      console.log("Transfer Clicked");
+    }
   var flag = false;
  if(HideList == null)
   {
@@ -194,6 +228,12 @@ const [HideList, setHideList] = useState(null);
 }
   
 {/* </TouchableOpacity> */}
+
+<View>
+  <TouchableOpacity onPress={demotransfer} >
+    <Text style = {styles.button}>Timer</Text>
+    </TouchableOpacity> 
+  </View>
   
   </View>
   </View>
