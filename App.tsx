@@ -61,10 +61,23 @@ const [HideList, setHideList] = useState(null);
     }
   
 
-    // console.log(HideList);
+   
+
+  var flag = false;
+ if(HideList == null)
+  {
+    flag = true;
+  }
   const handleLike = async () => 
     {
-      console.log("Like Pressed");
+
+      console.log(flag);
+      if(flag == true)
+      {
+      
+      if(List == null || List.length < 5)
+        {
+      console.log("In show list");
       try {
          await firestore()
         .collection('Show')
@@ -78,6 +91,52 @@ const [HideList, setHideList] = useState(null);
       } catch (error) {
         console.log(error);
       }
+    }
+    else 
+    {
+      //flag = false;
+      console.log("In Hide");
+      if(HideList == null || HideList.length < 5)
+        {
+      console.log("In Hide list");
+      try {
+         await firestore()
+        .collection('Hide')
+        .add({
+         Name: 'E',
+         createdAt: firestore.FieldValue.serverTimestamp()
+      })
+     .then(() => {
+      console.log('User added!');
+      });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    }
+    }
+    else 
+    {
+          console.log("Push only in Hide DB");
+          if(HideList == null || HideList.length < 5)
+            {
+          console.log("In Hide list");
+          try {
+             await firestore()
+            .collection('Hide')
+            .add({
+             Name: 'E',
+             createdAt: firestore.FieldValue.serverTimestamp()
+          })
+         .then(() => {
+          console.log('User added!');
+          });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+    }
 
     }
    const handleList = async () => 
