@@ -30,10 +30,22 @@ const getdbFirstTime = async () =>
       console.log(error);
     }  
   }
-
-
-//  console.log(List);
-
+  useEffect(() => {
+    gethidedbFirstTime();
+  }, [])
+  const gethidedbFirstTime = async () => 
+    {
+    try {        
+      const Users =  await firestore().collection('Hide').orderBy('createdAt', 'desc').get()
+      const tempo = []
+      Users.forEach((item) => {tempo.push({...item.data(), id: item.id})});
+  
+  
+      setHideList(tempo);
+      } catch (error) {
+        console.log(error);
+      }  
+    }
   useEffect(() => {
     getdb();
   }, [])
@@ -84,18 +96,28 @@ const getdbFirstTime = async () =>
         console.log(err);
       }
     }
-  
-
-   
-
-
-
-
-  const demotransfer = async () => 
+     const demotransfer = async () => 
     {
       
-
       console.log("Transfer Clicked");
+      if(List.length < 5 && HideList.length > 0)
+        {
+            // console.log(HideList);
+            const User = HideList[0];
+            const Userid = User.id;
+            //console.log(UserId);
+             const temp = List;
+             temp.push(User);
+            setList(temp);
+            console.log(List);
+            firestore().collection('Hide').doc(Userid).delete().then(() => {console.log("Done")});
+            firestore().collection('Show').add(User);
+
+        }
+        else
+        {
+          console.log("Already filled");
+        }
     }
   var flag = false;
  if(HideList == null)
@@ -231,7 +253,7 @@ const getdbFirstTime = async () =>
 
 <View>
   <TouchableOpacity onPress={demotransfer} >
-    <Text style = {styles.button}>Timer</Text>
+    <Text style = {styles.button}>Transfer</Text>
     </TouchableOpacity> 
   </View>
   
