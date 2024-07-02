@@ -9,6 +9,7 @@ export default function App() {
 
 const [showList, setShowList] = useState(false)
 const [List, setList] = useState(null)
+const [HideList, setHideList] = useState(null);
 
 
   useEffect(() => {
@@ -18,7 +19,7 @@ const [List, setList] = useState(null)
   const getdb = async () => 
     {
     try {        
-      firestore().collection('Show').onSnapshot((snap) => {
+      firestore().collection('Show').orderBy('createdAt', 'desc').onSnapshot((snap) => {
         const tempArray = []
         snap.forEach((item) => {
           tempArray.push({
@@ -34,6 +35,29 @@ const [List, setList] = useState(null)
             console.log(error);
       }    
     }
+
+
+  useEffect(() => {
+    gethidedb();
+  }, [])
+
+  const gethidedb = async () => 
+    {
+      try 
+      {
+          firestore().collection('Hide').onSnapshot((snap) => 
+          {
+            const temphide = []
+            snap.forEach((item) => temphide.push({...item.data(), id : item.id}));
+
+            setHideList(temphide);
+          })
+      }
+      catch(err)
+      {
+        console.log(err);
+      }
+    }
   
   const handleLike = async () => 
     {
@@ -41,13 +65,15 @@ const [List, setList] = useState(null)
       // console.log(List);
 
       try {
-       await firestore()
+       const docRef = await firestore()
         .collection('Show')
         .add({
-         Name: 'Ada Lovelace',
+         Name: 'D',
+         createdAt: firestore.FieldValue.serverTimestamp()
       })
      .then(() => {
       console.log('User added!');
+    //  console.log('Document written with ID: ', docRef.id);
       });
 
       } catch (error) {
@@ -64,6 +90,7 @@ const [List, setList] = useState(null)
       showList == true ? setShowList(false) : setShowList(true);
       console.log(showList);
       console.log(List);
+      // console.log(HideList);
 
 
     }
