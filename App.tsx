@@ -8,7 +8,7 @@ export default function App() {
 
 
 const [showList, setShowList] = useState(false)
-const [List, setList] = useState(null)
+const [List, setList] = useState<any>(null)
 const [HideList, setHideList] = useState(null);
 
 
@@ -20,7 +20,7 @@ const [HideList, setHideList] = useState(null);
     {
     try {        
       firestore().collection('Show').orderBy('createdAt', 'desc').onSnapshot((snap) => {
-        const tempArray = []
+        const tempArray : any = []
         snap.forEach((item) => {
           tempArray.push({
             ...item.data(),
@@ -47,7 +47,7 @@ const [HideList, setHideList] = useState(null);
       {
           firestore().collection('Hide').onSnapshot((snap) => 
           {
-            const temphide = []
+            const temphide : any = []
             snap.forEach((item) => temphide.push({...item.data(), id : item.id}));
 
             setHideList(temphide);
@@ -95,7 +95,7 @@ const [HideList, setHideList] = useState(null);
 
     }
 
-  const handleLongPress = async (cardId, cardVal) => 
+  const handleLongPress = async (cardId : any, cardVal: any) => 
     {
        console.log(cardId);
        console.log(cardVal);
